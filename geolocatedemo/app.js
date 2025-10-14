@@ -89,7 +89,7 @@ async function startLocationTracking() {
       const result = await navigator.permissions.query({ name: 'geolocation' });
       if (result.state === "granted" || result.state === "prompt") {
         fetchLocation();
-        window.geoInterval = setInterval(fetchLocation, 3000);
+        window.geoInterval = setInterval(fetchLocation, 1000);
       } else if (result.state === "denied") {
         document.getElementById('status').innerHTML = "Location access denied. Enable it in browser settings.";
       }
@@ -99,7 +99,7 @@ async function startLocationTracking() {
     }
   } else {
     fetchLocation();
-    window.geoInterval = setInterval(fetchLocation, 3000);
+    window.geoInterval = setInterval(fetchLocation, 1000);
   }
 }
 
