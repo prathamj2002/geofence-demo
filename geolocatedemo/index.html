@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GeoFence Boundary Checker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { margin: 0; }
+    #map { height: 100vh; width: 100vw; }
+    #status {
+      position: absolute;
+      top: 10px; left: 10px;
+      background: rgba(255,255,255,0.95);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 1em;
+      z-index: 1001;
+    }
+    .inside { color: green; font-weight: bold; }
+    .outside { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="status">Draw a boundary and enable GPS</div>
+  <!-- Leaflet and plugins -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+  <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
+  <!-- Your main app JS -->
+  <script src="app.js"></script>
+</body>
+</html>
