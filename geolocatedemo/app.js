@@ -5,19 +5,12 @@ const map = L.map('map').setView(DEFAULT_CENTER, 16);
 // --- Satellite & Labels tile layers ---
 const esriSat = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-  {
-    attribution: 'Imagery: Tiles © Esri',
-    maxZoom: 20
-  }
+  { attribution: 'Imagery: Tiles © Esri', maxZoom: 20 }
 ).addTo(map);
 
-// Reference (labels) layer overlaid for text
 const esriLabels = L.tileLayer(
   'https://services.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-  {
-    attribution: 'Labels: Esri',
-    maxZoom: 20
-  }
+  { attribution: 'Labels: Esri', maxZoom: 20 }
 ).addTo(map);
 
 // --- Feature group to hold drawn polygons ---
@@ -78,37 +71,22 @@ function checkLocation(lat, lng) {
   }
 }
 
-// --- Geolocation Fetching ---
-async function startLocationTracking() {
+// --- Real-time live GPS location tracking using watchPosition ---
+function startLocationTracking() {
   if (!navigator.geolocation) {
     document.getElementById('status').innerHTML = "Geolocation not supported!";
     return;
   }
-  if (navigator.permissions) {
-    try {
-      const result = await navigator.permissions.query({ name: 'geolocation' });
-      if (result.state === "granted" || result.state === "prompt") {
-        fetchLocation();
-        window.geoInterval = setInterval(fetchLocation, 1000);
-      } else if (result.state === "denied") {
-        document.getElementById('status').innerHTML = "Location access denied. Enable it in browser settings.";
-      }
-      result.onchange = () => startLocationTracking();
-    } catch (e) {
-      document.getElementById('status').innerHTML = "Error checking geolocation permission.";
-    }
-  } else {
-    fetchLocation();
-    window.geoInterval = setInterval(fetchLocation, 1000);
-  }
-}
-
-function fetchLocation() {
-  navigator.geolocation.getCurrentPosition(
+  // Use watchPosition for immediate updates
+  navigator.geolocation.watchPosition(
     pos => checkLocation(pos.coords.latitude, pos.coords.longitude),
     err => {
       document.getElementById('status').innerHTML = `GPS Error: ${err.message}`;
-      if (window.geoInterval) clearInterval(window.geoInterval);
+    },
+    {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 7000
     }
   );
 }
